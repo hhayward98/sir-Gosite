@@ -99,8 +99,8 @@ func AppRoutes() {
 
 	//testing for docker container
 	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	// fs := http.FileServer(http.Dir("static"))
+	// http.Handle("/static/", http.StripPrefix("/static/", fs))
 	
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/Page2", Page2)
