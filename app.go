@@ -1,10 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"html/template"
+	_ "github.com/go-sql-driver/mysql"
 
 )
 
@@ -41,6 +43,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 func Page3(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Running Page3\n")
+	tmpl := template.Must(template.ParseFiles("static/templates/page3.html"))
 
 		//connect to database
 	db, err := sql.Open("mysql", "Test:toor@(127.0.0.1:3308)/?parseTime=true")
@@ -55,32 +58,25 @@ func Page3(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("Connected to DB")
 	
-	Sdata := favthings{
-		Thing1: r.FormValue("F1")
-		Thing2: r.FormValue("F2")
-		Thing3: r.FormValue("F3")
+	obj1 := favthings{r.FormValue("F1"), r.FormValue("F2"), r.FormValue("F3")}
+	fmt.Println(obj1)
+	obj2 := InputForm{r.FormValue("Uname"), r.FormValue("Color"), obj1}
+	fmt.Println(obj2)
 
-	}
-	_ = Sdata
-
-	log.Print(Sdata)
-
-	data := InputForm {
-		Name: r.FormValue("Uname")
-		Color: r.FormValue("Color")
-		Fthings: Sdata
-	}
-
-	_ = data
-
-	log.Print(data)
-	
-	tmpl := template.Must(template.ParseFiles("static/templates/Page3.html"))
-	tmpl.Execute(w, "null")
+	tmpl.Execute(w, obj2)
 	log.Print("Running web-page")
-	return
+
 
 }
+
+func Page4(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("running Page4\n")
+	tmpl := template.Must(template.ParseFiles("static/templates/Page4.html"))
+
+	tmpl.Execute(w, "null")
+	return
+}
+
 
 
 func Page2(w http.ResponseWriter, r *http.Request) {
@@ -92,16 +88,18 @@ func Page2(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
 func AppRoutes() {
 
 	//testing for docker container
 	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs)))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/Page2", Page2)
 	http.HandleFunc("/Page3", Page3)
+	http.HandleFunc("/Page4", Page4)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }
