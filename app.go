@@ -38,8 +38,9 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Page2(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Running Page2\n")
+
+func Page3(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Running Page3\n")
 
 		//connect to database
 	db, err := sql.Open("mysql", "Test:toor@(127.0.0.1:3308)/?parseTime=true")
@@ -55,11 +56,14 @@ func Page2(w http.ResponseWriter, r *http.Request) {
 	log.Print("Connected to DB")
 	
 	Sdata := favthings{
-		Thing1: r.FormValue("T1")
-		Thing2: r.FormValue("T2")
-		Thing3: r.FormValue("T3")
+		Thing1: r.FormValue("F1")
+		Thing2: r.FormValue("F2")
+		Thing3: r.FormValue("F3")
 
 	}
+	_ = Sdata
+
+	log.Print(Sdata)
 
 	data := InputForm {
 		Name: r.FormValue("Uname")
@@ -67,11 +71,23 @@ func Page2(w http.ResponseWriter, r *http.Request) {
 		Fthings: Sdata
 	}
 
+	_ = data
+
+	log.Print(data)
 	
-	
-	tmpl := template.Must(template.ParseFiles("static/templates/Page2.html"))
+	tmpl := template.Must(template.ParseFiles("static/templates/Page3.html"))
 	tmpl.Execute(w, "null")
 	log.Print("Running web-page")
+	return
+
+}
+
+
+func Page2(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Running Page2\n")
+
+	tmpl := template.Must(template.ParseFiles("static/templates/Page2.html"))
+	tmpl.Execute(w, "null")
 	return
 
 }
@@ -85,6 +101,7 @@ func AppRoutes() {
 	
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/Page2", Page2)
+	http.HandleFunc("/Page3", Page3)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }
