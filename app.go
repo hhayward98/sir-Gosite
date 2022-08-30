@@ -10,6 +10,9 @@ import (
 
 )
 
+
+var tpl *template.Template
+
 type InputForm struct {
 	name string
 	color string
@@ -71,10 +74,13 @@ func Page3(w http.ResponseWriter, r *http.Request) {
 
 func Page4(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("running Page4\n")
-	tmpl := template.Must(template.ParseFiles("static/templates/Page4.html"))
 
-	tmpl.Execute(w, "null")
-	return
+	obj1 := favthings{"Coding", "Snowbording", "Investing"}
+	fmt.Println(obj1)
+	obj2 := InputForm{"Hunter", "Green", obj1}
+	fmt.Println(obj2)
+
+	tpl.ExecuteTemplate(w, "Page4.html", obj2)
 }
 
 
@@ -106,6 +112,7 @@ func AppRoutes() {
 
 
 func main() {
+	tpl, _ = template.ParseGlob("static/templates/*html")
 
 	log.Print("Listening......")
 	AppRoutes()
