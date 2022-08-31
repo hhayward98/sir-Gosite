@@ -122,6 +122,39 @@ func WriteHTML(Fname string) {
 }
 
 
+func AppendToMain() {
+	// append Temp(each line) to the string buffer
+	// can make conditions to search for content
+	// if Temp contains main() append to StrBuff and stepinto condition
+		// after appending current line from file, we can inject code to run in main()
+		// include appropiate tabs('\t') and new lines('\n')
+
+	var strbuffer string
+
+	f, err := os.Open("app.go")
+	Debugger(err)
+
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+
+		Line := scanner.Text()
+
+		if strings.Contains(Temp, "main()"){
+			fmt.Println(Temp)
+		}
+
+	}
+
+	defer f.Close()
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+
 
 func main() {
 	fmt.Println("Starting up Hephaestus....")
