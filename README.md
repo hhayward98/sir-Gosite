@@ -23,5 +23,5 @@
 #### run the docker file and the rest is history!!!
 
 
-### For an Example of the final product visit http://52.205.255.136:8080/Page1 (I selected 2 templates for this ex) 
-#### pages http://52.205.255.136:8080/Page0, http://52.205.255.136:8080/Page1, http://52.205.255.136:8080/index
+### For an Example of the final product visit http://52.205.255.136:8080/Page0 (Swap between ports 8080 amd 8088) 
+#### pages http://52.205.255.136:8088/Page1, http://52.205.255.136:8080/Page1, http://52.205.255.136:8088/index
