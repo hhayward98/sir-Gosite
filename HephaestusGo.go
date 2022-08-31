@@ -46,8 +46,10 @@ func GoFRAME(Num int){
 func InitAppHead() {
 	fmt.Println("Creating webapp File....")
 
+	Tem := "package main\n\nimport (\n\t'fmt'\n\t'log'\n)\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println('Home')\n}\n\nfunc main() {\n\tfmt.Println('hello')\n}\n\n"
+	New := strings.ReplaceAll(Tem, "'", `"`,)
 	f, err := os.Create("./app.go")
-	_, err2 := f.WriteString("package main\n\nimport ()\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println(`Home`)\n}\n\nfunc main() {\n\tfmt.Println(`hello`)\n}\n\n")
+	_, err2 := f.WriteString(New)
 	Debugger(err)
 	Debugger(err2)
 
@@ -57,10 +59,12 @@ func InitAppHead() {
 }
 
 func InitDocker(){
-
 	fmt.Println("Creating Docker File....")
+
+	Tem := "FROM golang:1.18\n\nRUN mkdir /GoWeb\n\nADD . /GoWeb\n\nWORKDIR /GoWeb\n\nCOPY go.* ./\n\nRUN go mod download && go mod verify\n\nRUN go build -o app .\n\nEXPOSE 8080\n\nCMD ['/GoWeb/app']"
+	New := strings.ReplaceAll(Tem, "'", `"`,)
 	f, err := os.Create("./Dockerfile")
-	_, err2 := f.WriteString("FROM golang:1.18\n\nRUN mkdir /GoWeb\n\nADD . /GoWeb\n\nWORKDIR /GoWeb\n\nCOPY go.* ./\n\nRUN go mod download && go mod verify\n\nRUN go build -o app .\n\nEXPOSE 8080\n\nCMD ['/GoWeb/app']")
+	_, err2 := f.WriteString(Tem)
 	Debugger(err)
 	Debugger(err2)
 
@@ -73,6 +77,7 @@ func InitCSS() {
 	if err := os.Mkdir("./static/css/", os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
+
 
 	f, err := os.Create("./static/css/main.css")
 	_, err2 := f.WriteString("html {\n\t\n\t\n}\n\nhead {\n\t\n\t\n}\n\nbody {\n\t\n\t\n}\n\nfooter {\n\t\n\t\n}\n")
@@ -112,8 +117,11 @@ func InitTemplates(Num int) {
 
 func WriteHTML(Fname string) {
 
+	Tem := "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'>\n\t<meta name='viewport' content='width=device-width, initial-scale=1'>\n\t<meta http-equiv='X-UA-Compatible' content='ie=edge' />\n\t<title>Home</title>\n</head>\n<body>\n\t<h3>Title</h3>\n\t<p>Information</p>\n</body>\n</html>"
+	New := strings.ReplaceAll(Tem, "'", `"`,)
+
 	f, err := os.Create("./static/templates/"+ Fname)
-	_, err2 := f.WriteString("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'>\n\t<meta name='viewport' content='width=device-width, initial-scale=1'>\n\t<meta http-equiv='X-UA-Compatible' content='ie=edge' />\n\t<title>Home</title>\n</head>\n<body>\n\t<h3>Title</h3>\n\t<p>Information</p>\n</body>\n</html>")
+	_, err2 := f.WriteString(New)
 	Debugger(err)
 	Debugger(err2)
 
