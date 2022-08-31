@@ -46,20 +46,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 func Page3(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Running Page3\n")
-	tmpl := template.Must(template.ParseFiles("static/templates/page3.html"))
-
-		//connect to database
-	db, err := sql.Open("mysql", "Test:toor@(127.0.0.1:3308)/?parseTime=true")
-	Debugger(err)
-
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-
-	_, err = db.Exec("USE aesir")
-	Debugger(err)
-
-	log.Print("Connected to DB")
+	tmpl := template.Must(template.ParseFiles("static/templates/page3.html")
 	
 	obj1 := favthings{r.FormValue("F1"), r.FormValue("F2"), r.FormValue("F3")}
 	fmt.Println(obj1)
@@ -75,12 +62,20 @@ func Page3(w http.ResponseWriter, r *http.Request) {
 func Page4(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("running Page4\n")
 
-	obj1 := favthings{"Coding", "Snowbording", "Investing"}
-	fmt.Println(obj1)
-	obj2 := InputForm{"Hunter", "Green", obj1}
-	fmt.Println(obj2)
+	db, err := sql.Open("mysql", "Test:toor@(127.0.0.1:3308)/?parseTime=true")
+	Debugger(err)
 
-	tpl.ExecuteTemplate(w, "Page4.html", obj2)
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = db.Exec("USE aesir")
+	Debugger(err)
+
+	log.Print("Connected to DB")
+
+	tpl.ExecuteTemplate(w, "Page4.html", "Connected To Database")
+
 }
 
 
