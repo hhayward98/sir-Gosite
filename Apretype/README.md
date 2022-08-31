@@ -1,4 +1,0 @@
-# Æsir Gosite
-
-
-#### AWS Deployment
