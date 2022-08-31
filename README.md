@@ -16,11 +16,12 @@
 #### As time goes on, I will be updating and adding more complexity and customization.
 
 ## Using Hephaestus-Go
-#### Download HephaestusGo.go file and run it like any other gofile. (only option 1 works rn)
-#### Select option 1 and enter the amount of html pages you want.
+#### Download HephaestusGo.go file and run it like any other go file. (only option 1 works right now)
+#### Select option 1 and enter the number of html pages you want.
 #### once the program is done you will need to run: $go mod init <name>  
-#### you should also remove the HephaestusGo.go from your directory to prevent multiple mains error in Docker.
+#### you should also remove the HephaestusGo.go from your directory to prevent multiple mains errors in Docker.
 #### run the docker file and the rest is history!!!
+
 
 
 ### For an Example of the final product visit http://52.205.255.136:8080/Page0 (Swap between ports 8080 amd 8088) 
