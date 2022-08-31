@@ -9,7 +9,7 @@
 #### The goal is to minimize setup time on a new machine or virtual machine, such as AWS ec2 instances. 
 #### Users will be able to customize the environment to better suit their needs.
 #### Personally, I use VIM on Linux, and I waste time setting up the environments for launching web apps.
-#### with Hephaestus-Go I just run one program and the tedious redundant code is done!
+#### with Hephaestus-Go, I just run one program and all the tedious, redundant code is done!!!
 
 ## Updates
 
