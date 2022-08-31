@@ -105,7 +105,7 @@ func InitTemplates(Num int) {
 		WriteHTML("index.html")
 
 		for i := 0; i < Num; i++ {
-			strBuf := "page"
+			strBuf := "Page"
 			s1 := strconv.Itoa(i)
 			strBuf += s1
 			strBuf += ".html"
