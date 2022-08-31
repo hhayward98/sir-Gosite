@@ -171,7 +171,7 @@ func AppendRoutsMain(Num int) {
 		if strings.Contains(Line, "main()"){
 			for j := 0; j < Num; j++ {
 				StJ := strconv.Itoa(j)
-				strinj := "\thttp.HandleFunc('/', Page"+StJ+")\n"
+				strinj := "\thttp.HandleFunc('/Page+"+StJ+"', Page"+StJ+")\n"
 				Rinject := strings.ReplaceAll(strinj, "'", `"`,)
 				//append to string Buffer code for injection
 				strbuffer += Rinject 
