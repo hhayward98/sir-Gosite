@@ -119,7 +119,6 @@ func InitTemplates(Num int) {
 	fmt.Println("Done")
 }
 
-func NewFunction(w http.ResponseWriter, r *http.Request)
 
 func WriteHTML(Fname string) {
 
