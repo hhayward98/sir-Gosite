@@ -47,7 +47,7 @@ func GoFRAME_L(Num int){
 func InitAppHead() {
 	fmt.Println("Creating webapp File....")
 
-	Tem := "package main\n\nimport (\n\t'fmt'\n\t'log'\n\t'net/http'\n\t'html/template\n)\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println('Home')\n}\n\n\n//here\n\n\nfunc main() {\n\n\thttp.HandleFunc('/', Home)\n\n\tlog.Print('Listening....')\n\tlog.Fatal(http.ListenAndServe(':8080', nil))\n\n}\n\n"
+	Tem := "package main\n\nimport (\n\t'fmt'\n\t'log'\n\t'net/http'\n\t'html/template'\n)\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println('Home')\n}\n\n\n//here\n\n\nfunc main() {\n\n\thttp.HandleFunc('/', Home)\n\n\tlog.Print('Listening....')\n\tlog.Fatal(http.ListenAndServe(':8080', nil))\n\n}\n\n"
 	New := strings.ReplaceAll(Tem, "'", `"`,)
 	f, err := os.Create("./app.go")
 	_, err2 := f.WriteString(New)
