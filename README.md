@@ -1,10 +1,5 @@
 # Æsir Gosite
 
-
-## For AWS Deployment
-
-
-
 ## Hephaestus-Go
 
 #### Hephaestus, the creator of Zeus’ thunderbolt, Poseidon's trident, and more.
