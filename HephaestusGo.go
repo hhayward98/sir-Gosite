@@ -1,11 +1,12 @@
 package main
 
 import (
-	// "bufio"
+	"bufio"
 	"fmt"
 	"os"
 	"log"
 	"strconv"
+	"strings"
 
 )
 
@@ -18,8 +19,8 @@ func Debugger(err error) {
 
 func Options(){
 
-	fmt.Println("Enter 1 to create GoFrame ")
-	fmt.Println("Enter 2 for .... ")
+	fmt.Println("Enter 1 to create GoFrame-L ")
+	fmt.Println("Enter 2 for GoApp-skeleton ")
 	fmt.Println("Enter 3 for ....")
 	fmt.Println("Enter 4 for ....")
 
@@ -27,7 +28,7 @@ func Options(){
 }
 
 
-func GoFRAME(Num int){
+func GoFRAME_L(Num int){
 	fmt.Println("Creating GOFRAME....")
 
 	InitAppHead()
@@ -46,7 +47,7 @@ func GoFRAME(Num int){
 func InitAppHead() {
 	fmt.Println("Creating webapp File....")
 
-	Tem := "package main\n\nimport (\n\t'fmt'\n\t'log'\n)\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println('Home')\n}\n\nfunc main() {\n\tfmt.Println('hello')\n}\n\n"
+	Tem := "package main\n\nimport (\n\t'fmt'\n\t'log'\n)\n\nfunc Home(w http.ResponseWriter, r *http.Response) {\n\tfmt.Println('Home')\n}\n\n\n//here\n\n\nfunc main() {\n\n\thttp.HandleFunc('/', Home)\n\n\tlog.Print('Listening....')\n\tlog.Fatal(http.ListenAndServe(':8080', nil))\n\n}\n\n"
 	New := strings.ReplaceAll(Tem, "'", `"`,)
 	f, err := os.Create("./app.go")
 	_, err2 := f.WriteString(New)
@@ -54,6 +55,8 @@ func InitAppHead() {
 	Debugger(err2)
 
 	defer f.Close()
+
+
 	fmt.Println("Done")
 
 }
@@ -64,7 +67,7 @@ func InitDocker(){
 	Tem := "FROM golang:1.18\n\nRUN mkdir /GoWeb\n\nADD . /GoWeb\n\nWORKDIR /GoWeb\n\nCOPY go.* ./\n\nRUN go mod download && go mod verify\n\nRUN go build -o app .\n\nEXPOSE 8080\n\nCMD ['/GoWeb/app']"
 	New := strings.ReplaceAll(Tem, "'", `"`,)
 	f, err := os.Create("./Dockerfile")
-	_, err2 := f.WriteString(Tem)
+	_, err2 := f.WriteString(New)
 	Debugger(err)
 	Debugger(err2)
 
@@ -111,13 +114,15 @@ func InitTemplates(Num int) {
 		}
 	}
 
+	AppendRoutsMain(Num)
+
 	fmt.Println("Done")
 }
 
 
 func WriteHTML(Fname string) {
 
-	Tem := "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'>\n\t<meta name='viewport' content='width=device-width, initial-scale=1'>\n\t<meta http-equiv='X-UA-Compatible' content='ie=edge' />\n\t<title>Home</title>\n</head>\n<body>\n\t<h3>Title</h3>\n\t<p>Information</p>\n</body>\n</html>"
+	Tem := "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'>\n\t<meta name='viewport' content='width=device-width, initial-scale=1'>\n\t<meta http-equiv='X-UA-Compatible' content='ie=edge' />\n\t<title>Home</title>\n</head>\n<body>\n\t<h3>{{.}}</h3>\n\t<p>Information</p>\n</body>\n</html>"
 	New := strings.ReplaceAll(Tem, "'", `"`,)
 
 	f, err := os.Create("./static/templates/"+ Fname)
@@ -130,17 +135,13 @@ func WriteHTML(Fname string) {
 }
 
 
-func AppendToMain() {
-	// append Temp(each line) to the string buffer
-	// can make conditions to search for content
-	// if Temp contains main() append to StrBuff and stepinto condition
-		// after appending current line from file, we can inject code to run in main()
-		// include appropiate tabs('\t') and new lines('\n')
+func AppendRoutsMain(Num int) {
 
 	var strbuffer string
-
 	f, err := os.Open("app.go")
 	Debugger(err)
+
+	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
 
@@ -148,20 +149,50 @@ func AppendToMain() {
 
 		Line := scanner.Text()
 
-		if strings.Contains(Temp, "main()"){
-			fmt.Println(Temp)
+		// adds functions for routs
+		// allow users to choose methods for template serving
+			// parsing Glob of html vs parsing individual files  
+
+		if strings.Contains(Line, "//here") {
+
+			for j := 0; j < Num; j++ {
+				StJ := strconv.Itoa(j)
+				Rfunc := "func Page"+StJ+"(w http.ResponseWriter, r *http.Response) {\n\n\ttmpl := template.Must(template.ParseFiles('static/templates/Page"+StJ+".html'))\n\ttmpl.Execute(w, 'Page"+StJ+"')\n\treturn\n\n}\n\n"
+				Rinject := strings.ReplaceAll(Rfunc, "'", `"`,)
+				//append to string Buffer code for injection
+				strbuffer += Rinject 
+
+			}
+
+		}
+
+		strbuffer += Line +"\n"
+
+		if strings.Contains(Line, "main()"){
+			for j := 0; j < Num; j++ {
+				StJ := strconv.Itoa(j)
+				strinj := "\thttp.HandleFunc('/', Page"+StJ+")\n"
+				Rinject := strings.ReplaceAll(strinj, "'", `"`,)
+				//append to string Buffer code for injection
+				strbuffer += Rinject 
+
+			}
 		}
 
 	}
 
-	defer f.Close()
+	h, err := os.Create("./app.go")
+	_, err2 := h.WriteString(strbuffer)
+	Debugger(err)
+	Debugger(err2)
+
+	defer h.Close()
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
 }
-
 
 
 func main() {
@@ -179,8 +210,14 @@ func main() {
 	if CHOICE == 1 {
 		fmt.Println("Enter the number html Templates you want")
 		fmt.Scanln(&TempNum)
-		GoFRAME(TempNum)
-	} else {
+		GoFRAME_L(TempNum)
+	}else if CHOICE == 2 {
+		fmt.Println("Enter the number html Templates you want")
+		fmt.Scanln(&TempNum)
+		
+
+
+	}else {
 		fmt.Println("Sorry, this program is still undergoing development!")
 	}
 
