@@ -11,11 +11,11 @@
 #### Personally, I use VIM on Linux, and I waste time setting up the environments for launching web apps.
 #### with Hephaestus-Go I just run one program and the tedious redundant code is done!
 
-### Updates
+## Updates
 
 #### As time goes on, I will be updating and adding more complexity and customization.
 
-### Using Hephaestus-Go
+## Using Hephaestus-Go
 #### Download HephaestusGo.go file and run it like any other gofile. (only option 1 works rn)
 #### Select option 1 and enter the amount of html pages you want.
 #### once the program is done you will need to run: $go mod init <name>  
