@@ -27,16 +27,21 @@ func Options(){
 
 }
 
+//================================
+//		option 1/Primary
+//================================
+
 
 func GoFRAME_L(Num int){
 	fmt.Println("Creating GOFRAME....")
-
+	
+	// makes app.go and writes basic main package with Home route
 	InitAppHead()
-
+	// makes Dockerfile 
 	InitDocker()
-
+	// makes n amount of html files depending on userinput 
 	InitTemplates(Num)
-
+	// makes css file
 	InitCSS()
 
 	fmt.Println("GoFRAME Complete!!!")
@@ -98,22 +103,25 @@ func InitTemplates(Num int) {
 	if err := os.MkdirAll("./static/templates/", os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
-
+	// if the user only needs 1 page, program makes just the index page
 	if Num == 1 {
 		WriteHTML("index.html")
 	}else if Num > 1 {
 		WriteHTML("index.html")
-
-		for i := 0; i < Num; i++ {
+		// makes n amount of html files
+		for i := 1; i < Num; i++ {
 			strBuf := "Page"
 			s1 := strconv.Itoa(i)
 			strBuf += s1
 			strBuf += ".html"
 			fmt.Println(strBuf)
+			// writes code to html files
 			WriteHTML(strBuf)
 		}
 	}
 
+	// opens app.go and adds routes to the html files that were created
+	// takes Num so the number of routes is == to the number of html files created
 	AppendRoutsMain(Num)
 
 	fmt.Println("Done")
@@ -155,7 +163,7 @@ func AppendRoutsMain(Num int) {
 
 		if strings.Contains(Line, "//here") {
 
-			for j := 0; j < Num; j++ {
+			for j := 1; j < Num; j++ {
 				StJ := strconv.Itoa(j)
 				Rfunc := "func Page"+StJ+"(w http.ResponseWriter, r *http.Request) {\n\n\ttmpl := template.Must(template.ParseFiles('static/templates/Page"+StJ+".html'))\n\ttmpl.Execute(w, 'Page"+StJ+"')\n\treturn\n\n}\n\n"
 				Rinject := strings.ReplaceAll(Rfunc, "'", `"`,)
@@ -169,7 +177,7 @@ func AppendRoutsMain(Num int) {
 		strbuffer += Line +"\n"
 
 		if strings.Contains(Line, "main()"){
-			for j := 0; j < Num; j++ {
+			for j := 1; j < Num; j++ {
 				StJ := strconv.Itoa(j)
 				strinj := "\thttp.HandleFunc('/Page"+StJ+"', Page"+StJ+")\n"
 				Rinject := strings.ReplaceAll(strinj, "'", `"`,)
@@ -193,6 +201,57 @@ func AppendRoutsMain(Num int) {
 	}
 
 }
+
+
+//================================
+//			Option 2
+//================================
+
+
+func AppendStyling(BK_color string, Text_color string, Second_color string) {
+	fmt.Println("Adding Styling")
+	// add styling to css file based on user input
+}
+
+// ask if user needs a database
+func AppendDataBase(DBname string) {
+	fmt.Println("Implementing Database....")
+	// must create and setup database before trying to use in our program
+	InitDatabase(DBname)
+	// add code that connects to a database as part of a page function 
+	// let the user choose what route/page will be modified
+
+}
+
+// check if the Database already exists before trying to create a newone
+func InitDatabase(DBname string) {
+	fmt.Println("Setting Up Database....")
+	// create a database to use for web app 
+	//full interface might be required
+
+	fmt.Println("Database Creation complete!")
+
+}
+
+// ask if user needs any input forms
+func AppendForms(FormName string, PageName string) {
+	fmt.Println("Adding Forms....")
+	// let the user specify form parameters (size, var_names, var_types, etc...) 
+	// user should also choose what Page gets the form (letting users choose the location on the page for a bonus)
+	// might need a string buffer to write working code 
+
+}
+
+
+func InitUnitTest() {
+	fmt.Println("Creating Test....")
+	//add a unit test file that will create test for everything created and test to see if the creation was successful
+}
+
+
+//================================
+//				mian
+//================================
 
 
 func main() {
@@ -222,3 +281,6 @@ func main() {
 	}
 
 }
+
+
+// add unit test to see if all files were created correctly and everything works
