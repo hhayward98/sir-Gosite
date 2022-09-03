@@ -1,0 +1,18 @@
+
+
+Starting containers:
+
+$sudo docker compose build
+
+OR
+
+$sudo docker-compose up --build
+
+if the golang app does not start, Bash into the container and manually start go-app
+
+$sudo docker exec -it <containerName> bash
+
+Navigate to go-app and run it  
+
+
+
