@@ -3,13 +3,13 @@ services:
   db:
     image: mysql:latest
     ports:
-      - "3307:3308"
+      - "3305:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: sqldock
       MYSQL_USER: test
       MYSQL_PASSWORD: toor
-      MYSQL_PORT: 3308
+      MYSQL_PORT: 3306
       MYSQL_HOST: db 
     container_name: my-golang-app-db
     command:
@@ -20,6 +20,6 @@ services:
     volumes:
       - .:/go/src/app:rw
     ports:
-      - "8080:8081"
+      - "8088:8088"
     container_name: my-golang-app
 

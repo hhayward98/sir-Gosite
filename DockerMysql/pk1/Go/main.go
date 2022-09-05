@@ -30,7 +30,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 func PinfoTest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Info page")
 
-	db, err := sql.Open("mysql", "test:toor@(db:3308)/?parseTime=true")
+	db, err := sql.Open("mysql", "test:toor@(db:3306)/sqldock")
 	Debugger(err)
 	if err := db.Ping(); err != nil {
 		log.Fatal(err)
@@ -42,6 +42,7 @@ func PinfoTest(w http.ResponseWriter, r *http.Request) {
 
 
 	tpl.ExecuteTemplate(w, "Pinfo.html", "")
+	
 	return
 }
 
@@ -54,7 +55,7 @@ func AppRoutes() {
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/Info", PinfoTest)
 
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	log.Fatal(http.ListenAndServe(":8088", nil))
 
 }
 
