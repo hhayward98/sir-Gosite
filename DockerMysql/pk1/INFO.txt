@@ -15,4 +15,5 @@ $sudo docker exec -it <containerName> bash
 Navigate to go-app and run it  
 
 
+DONT forget to add a table to the Database.
 
