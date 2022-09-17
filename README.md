@@ -17,7 +17,7 @@
 
 ####
 ####
-## AWS EC2 Instance Configuration 
+## AWS EC2 Instance (Amazon Linux 2 AMI (HVM)) Configuration 
 ###
 ### Updating and installing 
 ###
